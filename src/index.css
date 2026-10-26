@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cine-red: #8b0a1a;
+  --color-cine-red-hover: #a50f22;
+  --color-cine-bg: #0b0b0b;
+  --color-cine-surface: #181818;
+  --color-cine-muted: #a3a3a3;
+}
+
+body {
+  @apply bg-cine-bg text-white antialiased;
+}
