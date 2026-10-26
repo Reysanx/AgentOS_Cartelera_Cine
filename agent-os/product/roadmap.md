@@ -1,0 +1,11 @@
+# Product Roadmap
+
+## Phase 1: MVP
+
+- **Listado de películas**: cartelera con póster y título de las películas en exhibición.
+- **Ficha de película**: detalle con sinopsis, tráiler, clasificación, duración y reparto.
+
+## Phase 2: Post-Launch
+
+- **Búsqueda y filtros**: buscar por título y filtrar por género, idioma o formato.
+- **Próximos estrenos**: sección con las películas que llegarán pronto.

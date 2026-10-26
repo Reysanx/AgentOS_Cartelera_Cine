@@ -1,0 +1,25 @@
+# Variables de entorno (contienen claves privadas)
+.env
+.env.local
+.env.*.local
+
+# Dependencias
+node_modules/
+
+# Build de Vite
+dist/
+dist-ssr/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor y sistema
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Documentación interna (no se versiona)
+docs/bitacora.md

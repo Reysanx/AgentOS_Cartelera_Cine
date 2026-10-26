@@ -1,2 +1,10 @@
 # Agent OS Standards Index
 
+
+api:
+  loading-error-states:
+    description: Hook useFetch y renderizado de carga, error y reintento
+  tmdb-client:
+    description: Cliente centralizado de TMDB en src/services/tmdb.js
+  tmdb-language-images:
+    description: Idioma es-ES, región ES y URLs de pósters con placeholder
