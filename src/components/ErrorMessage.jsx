@@ -1,6 +1,10 @@
-export default function ErrorMessage({ onRetry, message = 'No pudimos cargar las películas. Inténtalo de nuevo.' }) {
+export default function ErrorMessage({
+  onRetry,
+  message = 'No pudimos cargar las películas. Inténtalo de nuevo.',
+  compact = false,
+}) {
   return (
-    <div className="px-4 py-24 text-center" role="alert">
+    <div className={`text-center ${compact ? 'py-4' : 'px-4 py-24'}`} role="alert">
       <p className="text-cine-muted">{message}</p>
       <button
         type="button"
