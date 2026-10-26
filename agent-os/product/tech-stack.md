@@ -4,6 +4,9 @@
 
 - React
 - Vite (build y servidor de desarrollo)
+- Tailwind CSS v4 (estilos, vía `@tailwindcss/vite`)
+- React Router (rutas `/` y `/pelicula/:id`)
+- JavaScript (sin TypeScript)
 
 ## Backend
 
