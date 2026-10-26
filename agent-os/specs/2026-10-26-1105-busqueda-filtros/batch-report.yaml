@@ -1,0 +1,114 @@
+batch_id: "B01"
+completed_tasks: ["T001", "T002", "T003"]
+blocked_tasks: []
+files_changed:
+  T001:
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/plan.md"
+      change_type: "created"
+      description: "Spec con tareas, criterios de aceptación y mapeo de requisitos."
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/shape.md"
+      change_type: "created"
+      description: "Decisiones y alcance confirmado."
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/standards.md"
+      change_type: "created"
+      description: "Estándares aplicables."
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/references.md"
+      change_type: "created"
+      description: "Referencias de implementación existentes."
+  T002:
+    - file: "src/services/tmdb.js"
+      change_type: "modified"
+      description: "Añadida la consulta TMDB de géneros."
+    - file: "src/pages/Cartelera.jsx"
+      change_type: "modified"
+      description: "Búsqueda por título y filtros combinables de género e idioma."
+    - file: "src/components/ErrorMessage.jsx"
+      change_type: "modified"
+      description: "Añadida presentación compacta del error recuperable de géneros."
+  T003:
+    - file: "agent-os/product/roadmap.md"
+      change_type: "modified"
+      description: "Documentado el aplazamiento del formato de exhibición."
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/checkpoints/tasks-to-impl.yaml"
+      change_type: "created"
+      description: "Trazabilidad de requisitos y tareas completadas."
+    - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/batch-report.yaml"
+      change_type: "created"
+      description: "Informe de ejecución de la batch."
+upstream_artifacts_consumed:
+  T002:
+    - artifact: "agent-os/specs/2026-10-26-1105-busqueda-filtros/plan.md"
+      used_for: "Alcance, decisiones y criterios REQ-001 a REQ-004."
+    - artifact: "agent-os/standards/api/tmdb-client.md"
+      used_for: "Centralización de la consulta de géneros."
+    - artifact: "agent-os/standards/api/tmdb-language-images.md"
+      used_for: "Idioma y región predeterminados de TMDB."
+    - artifact: "agent-os/standards/api/loading-error-states.md"
+      used_for: "Estados de carga, error y reintento."
+evidence_mapping:
+  T002:
+    - upstream: "plan.md#REQ-001"
+      output: "src/pages/Cartelera.jsx"
+      evidence: "Smoke test: búsqueda ignora mayúsculas y espacios exteriores."
+    - upstream: "plan.md#REQ-002"
+      output: "src/services/tmdb.js; src/pages/Cartelera.jsx"
+      evidence: "Smoke test: selector y filtro de género."
+    - upstream: "plan.md#REQ-003"
+      output: "src/pages/Cartelera.jsx"
+      evidence: "Smoke test: idioma original e idioma visible en español."
+    - upstream: "plan.md#REQ-004"
+      output: "src/pages/Cartelera.jsx"
+      evidence: "Smoke test: criterios combinados, estado vacío y limpieza."
+  T003:
+    - upstream: "plan.md#REQ-005"
+      output: "agent-os/product/roadmap.md"
+      evidence: "Roadmap aclara que formato requiere una fuente de datos."
+traceability:
+  - requirement: "REQ-001"
+    plan_item: "Tarea 2"
+    task: "T002"
+    files: ["src/pages/Cartelera.jsx"]
+    status: "completed"
+  - requirement: "REQ-002"
+    plan_item: "Tarea 2"
+    task: "T002"
+    files: ["src/services/tmdb.js", "src/pages/Cartelera.jsx"]
+    status: "completed"
+  - requirement: "REQ-003"
+    plan_item: "Tarea 2"
+    task: "T002"
+    files: ["src/pages/Cartelera.jsx"]
+    status: "completed"
+  - requirement: "REQ-004"
+    plan_item: "Tarea 2"
+    task: "T002"
+    files: ["src/pages/Cartelera.jsx"]
+    status: "completed"
+  - requirement: "REQ-005"
+    plan_item: "Tareas 1 y 3"
+    task: "T001, T003"
+    files: ["agent-os/specs/2026-10-26-1105-busqueda-filtros/shape.md", "agent-os/product/roadmap.md"]
+    status: "completed"
+protocol_violation: false
+errors: []
+warnings:
+  - "No existe una suite de tests automatizada; se validó la interacción con un smoke test de navegador y npm run build."
+test_results:
+  T001:
+    command: "Revisión de documentación Agent OS"
+    passed: 1
+    failed: 0
+    skipped: 0
+    failures: []
+  T002:
+    command: "Playwright browser smoke test con respuestas TMDB simuladas"
+    passed: 5
+    failed: 0
+    skipped: 0
+    failures: []
+  T003:
+    command: "npm run build"
+    passed: 1
+    failed: 0
+    skipped: 0
+    failures: []

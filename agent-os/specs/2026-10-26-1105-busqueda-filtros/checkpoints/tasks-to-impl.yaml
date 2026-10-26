@@ -1,0 +1,166 @@
+# Tasks-to-Implementation Traceability Checkpoint
+
+metadata:
+  generated: "2026-10-26T11:15:00+01:00"
+  source_tasks: "agent-os/specs/2026-10-26-1105-busqueda-filtros/plan.md"
+  last_updated: "2026-10-26T11:15:00+01:00"
+
+summary:
+  total_tasks: 3
+  completed_tasks: 3
+  in_progress_tasks: 0
+  pending_tasks: 0
+  completion_percentage: 100.0
+
+tasks:
+  - task_id: "T001"
+    description: "Guardar documentación de la spec"
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/plan.md"
+          changes:
+            - line_start: 1
+              line_end: 53
+              change_type: "added"
+              description: "Plan y mapeo REQ-plan-tarea."
+        - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/shape.md"
+          changes:
+            - line_start: 1
+              line_end: 30
+              change_type: "added"
+              description: "Alcance, decisiones y contexto confirmado."
+        - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/standards.md"
+          changes:
+            - line_start: 1
+              line_end: 101
+              change_type: "added"
+              description: "Estándares TMDB y estados de carga/error aplicables."
+        - file: "agent-os/specs/2026-10-26-1105-busqueda-filtros/references.md"
+          changes:
+            - line_start: 1
+              line_end: 23
+              change_type: "added"
+              description: "Referencias de código y patrones existentes."
+    verification:
+      build_passed: true
+      test_results:
+        command: "Revisión de documentación Agent OS"
+        passed: 1
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "La documentación se guardó antes de implementar."
+    upstream_trace:
+      plan_item: "Tarea 1"
+      requirements: ["REQ-005"]
+      full_trace: "REQ-005 → Tarea 1 → T001 → documentos de la spec"
+
+  - task_id: "T002"
+    description: "Implementar búsqueda y filtros"
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "src/services/tmdb.js"
+          changes:
+            - line_start: 18
+              line_end: 18
+              change_type: "added"
+              description: "Consulta centralizada de géneros de películas."
+        - file: "src/pages/Cartelera.jsx"
+          changes:
+            - line_start: 1
+              line_end: 131
+              change_type: "modified"
+              description: "Controles accesibles y filtros combinables para título, género e idioma original."
+        - file: "src/components/ErrorMessage.jsx"
+          changes:
+            - line_start: 1
+              line_end: 18
+              change_type: "modified"
+              description: "Variante compacta de mensaje de error para el fallo recuperable de géneros."
+    verification:
+      build_passed: true
+      test_results:
+        command: "Playwright browser smoke test con respuestas TMDB simuladas"
+        passed: 5
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "Comprobados búsqueda insensible a mayúsculas/espacios, filtros combinados, estado sin coincidencias y limpieza."
+    upstream_trace:
+      plan_item: "Tarea 2"
+      requirements: ["REQ-001", "REQ-002", "REQ-003", "REQ-004"]
+      full_trace: "REQ-001..REQ-004 → Tarea 2 → T002 → Cartelera, cliente TMDB y ErrorMessage"
+
+  - task_id: "T003"
+    description: "Validar y reflejar el alcance"
+    status: "completed"
+    implementation:
+      files_changed:
+        - file: "agent-os/product/roadmap.md"
+          changes:
+            - line_start: 10
+              line_end: 10
+              change_type: "modified"
+              description: "Precisa el idioma original y deja formato pendiente de fuente."
+    verification:
+      build_passed: true
+      test_results:
+        command: "npm run build"
+        passed: 1
+        failed: 0
+        skipped: 0
+        failures: []
+      notes: "El build de producción finalizó correctamente; git diff --check no reportó errores."
+    upstream_trace:
+      plan_item: "Tarea 3"
+      requirements: ["REQ-005"]
+      full_trace: "REQ-005 → Tarea 3 → T003 → roadmap.md"
+
+pending_tasks: []
+untracked_changes: []
+
+traceability_chain:
+  - chain_id: "TRACE-001"
+    requirement: "REQ-001"
+    plan_phase: "Tarea 2"
+    plan_item: "Búsqueda por título"
+    tasks: ["T002"]
+    files: ["src/pages/Cartelera.jsx"]
+    status: "complete"
+  - chain_id: "TRACE-002"
+    requirement: "REQ-002"
+    plan_phase: "Tarea 2"
+    plan_item: "Filtro por género"
+    tasks: ["T002"]
+    files: ["src/services/tmdb.js", "src/pages/Cartelera.jsx"]
+    status: "complete"
+  - chain_id: "TRACE-003"
+    requirement: "REQ-003"
+    plan_phase: "Tarea 2"
+    plan_item: "Filtro por idioma original"
+    tasks: ["T002"]
+    files: ["src/pages/Cartelera.jsx"]
+    status: "complete"
+  - chain_id: "TRACE-004"
+    requirement: "REQ-004"
+    plan_phase: "Tarea 2"
+    plan_item: "Filtros combinables y reiniciables"
+    tasks: ["T002"]
+    files: ["src/pages/Cartelera.jsx"]
+    status: "complete"
+  - chain_id: "TRACE-005"
+    requirement: "REQ-005"
+    plan_phase: "Tarea 1 y Tarea 3"
+    plan_item: "Formato pendiente de datos"
+    tasks: ["T001", "T003"]
+    files: ["agent-os/specs/2026-10-26-1105-busqueda-filtros/shape.md", "agent-os/product/roadmap.md"]
+    status: "complete"
+
+validation:
+  passed: true
+  errors: []
+  warnings:
+    - "El proyecto no contiene una suite de tests automatizada; la interacción se validó con un smoke test de navegador."
+  blocking_issues: []

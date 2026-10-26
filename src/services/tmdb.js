@@ -15,6 +15,8 @@ async function request(path, params = {}) {
 
 export const getNowPlaying = () => request('/movie/now_playing');
 
+export const getMovieGenres = () => request('/genre/movie/list');
+
 export const getMovie = (id) =>
   request(`/movie/${id}`, {
     append_to_response: 'videos,credits,release_dates',
