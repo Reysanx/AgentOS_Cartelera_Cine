@@ -378,6 +378,60 @@ Trabajo hecho fuera de esta sesión por Alex en la rama `spec_Busqueda-Filtrado`
 
 ---
 
+## Etapa 12: próximos estrenos (PR #6, 27/10/2026)
+
+Trabajo hecho fuera de esta sesión por González Rosas (fork `lgonros0510`). Se registra a partir del historial de git.
+
+| Commit | Autor y fecha | Contenido |
+|---|---|---|
+| `ae57e51` | González Rosas, 27/10/2026 20:21 | "Añade sección de próximos estrenos" (co-autor: Copilot) |
+| `d6813e2` | González Rosas, 27/10/2026 20:22 | Merge de `main` en su rama |
+| `1d42e80` | Samuel Fernández, 27/10/2026 22:40 | Merge del PR #6 (`lgonros0510/main` → `main`) |
+
+### Spec `agent-os/specs/2026-10-27-1851-proximos-estrenos/`
+`plan.md`, `shape.md`, `standards.md` y `references.md`.
+
+**Decisiones (de `plan.md` y `shape.md`):**
+- Página independiente en la ruta `/proximos-estrenos`, enlazada desde la cabecera; el logo sigue llevando a `/`.
+- Datos de `/movie/upcoming` de TMDB con `language=es-ES` y `region=ES`, solo la primera página de resultados.
+- Se reutiliza `MovieCard`, con la fecha de estreno en español. Si no hay fecha, se muestra "Fecha por confirmar".
+- Estados de carga, error con reintento y lista vacía, según los estándares existentes.
+- Sin paginación, filtros ni fuentes nuevas; la cartelera y sus filtros no cambian.
+
+### Código
+| Archivo | Cambio |
+|---|---|
+| `src/services/tmdb.js` | Nueva función `getUpcoming()` → `/movie/upcoming` |
+| `src/pages/ProximosEstrenos.jsx` | Página nueva: cuadrícula de tarjetas con fecha formateada (`Intl.DateTimeFormat` `es-ES`, `dateStyle: 'long'`, zona UTC) |
+| `src/App.jsx` | Ruta `/proximos-estrenos` |
+| `src/components/Header.jsx` | Navegación con el enlace "Próximos estrenos" (`aria-label="Navegación principal"`) |
+| `src/components/MovieCard.jsx` | Nueva prop opcional `releaseDate` que pinta la fecha bajo el título |
+| `agent-os/product/roadmap.md` | "Próximos estrenos" pasa a describir la página implementada |
+
+---
+
+## Etapa 13: poner en marcha la app en local (27/10/2026)
+
+**Petición:** leer el proyecto, instalar lo necesario y levantar el servidor; después reiniciarlo, cerrarlo y diagnosticar que la cartelera no se veía.
+
+### Comandos
+| # | Comando | Resultado |
+|---|---|---|
+| 1 | `npm install` | 39 paquetes, 0 vulnerabilidades |
+| 2 | `npm run dev` (segundo plano) | Vite 8.3.5 en http://localhost:5173/. Aviso: Node 20.13.1, Vite pide 20.19+ o 22.12+; arrancó igualmente |
+| 3 | Reinicio del servidor | El 5173 seguía ocupado por un proceso anterior y el nuevo subió en el **5174** |
+| 4 | `Get-NetTCPConnection` y `Get-CimInstance Win32_Process` | Los dos puertos estaban ocupados por `node.exe` con `vite.js` de este proyecto |
+| 5 | `Stop-Process` sobre esos dos procesos | Puertos 5173 y 5174 libres; el usuario arranca después con `npm run dev` |
+
+### Incidencia: la cartelera no se veía
+- La consola del navegador mostraba **HTTP 401** de TMDB en `/movie/now_playing` y `/genre/movie/list`.
+- Causa: la `VITE_TMDB_API_KEY` del `.env` tenía **31 caracteres**; las claves v3 de TMDB tienen 32 (se perdió un carácter al copiarla). El código y el servidor funcionan bien.
+- Solución indicada: copiar de nuevo la "Clave de API" (no el token de lectura) de https://www.themoviedb.org/settings/api, pegarla en `.env` sin espacios ni comillas y reiniciar `npm run dev`, porque Vite solo lee `.env` al arrancar.
+- Aviso: la clave se pegó completa en un mensaje de la conversación, así que conviene regenerarla en TMDB cuando acabe el trabajo.
+- No se modificó ningún archivo del repositorio en esta etapa.
+
+---
+
 ## Estado actual del proyecto
 
 ```
@@ -392,9 +446,11 @@ AgentOS_Cartelera_Cine/
 │   │   ├── 2026-10-26-1041-mvp-cartelera/
 │   │   │   ├── plan.md, shape.md, standards.md, references.md
 │   │   │   └── visuals/notas.md
-│   │   └── 2026-10-26-1105-busqueda-filtros/
-│   │       ├── plan.md, shape.md, standards.md, references.md
-│   │       └── batch-report.yaml, checkpoints/tasks-to-impl.yaml
+│   │   ├── 2026-10-26-1105-busqueda-filtros/
+│   │   │   ├── plan.md, shape.md, standards.md, references.md
+│   │   │   └── batch-report.yaml, checkpoints/tasks-to-impl.yaml
+│   │   └── 2026-10-27-1851-proximos-estrenos/
+│   │       └── plan.md, shape.md, standards.md, references.md
 │   └── standards/
 │       ├── index.yml
 │       └── api/
@@ -408,7 +464,7 @@ AgentOS_Cartelera_Cine/
 ├── src/
 │   ├── components/  (Header, Loader, ErrorMessage, MovieCard)
 │   ├── hooks/useFetch.js
-│   ├── pages/       (Cartelera, Ficha)
+│   ├── pages/       (Cartelera, Ficha, ProximosEstrenos)
 │   ├── services/tmdb.js
 │   ├── App.jsx, main.jsx, index.css
 ├── .env                         (ignorado por git)
@@ -420,11 +476,12 @@ AgentOS_Cartelera_Cine/
 └── README.md
 ```
 
-Rama actual: `main`, sincronizada con GitHub. Incluye los PR #1 a #5: producto y estándares, spec y MVP de la cartelera, búsqueda y filtros, el README nuevo (`7da4710`) y esta bitácora.
+Rama actual: `main`, sincronizada con GitHub (último commit `1d42e80`). Incluye los PR #1 a #6: producto y estándares, spec y MVP de la cartelera, búsqueda y filtros, el README nuevo (`7da4710`), esta bitácora y próximos estrenos. La fase 2 del roadmap está completa salvo el filtro por formato.
 
 ## Siguientes pasos
-1. Revisar la app en http://localhost:5173 (`npm run dev`).
-2. Quitar el prefijo `VITE_` a `VITE_TMDB_READ_TOKEN` en `.env`, o eliminarlo.
-3. Siguiente spec de la fase 2: próximos estrenos (búsqueda y filtros ya está hecho).
+1. Corregir la `VITE_TMDB_API_KEY` del `.env` (31 caracteres en lugar de 32, da 401) y arrancar con `npm run dev` en http://localhost:5173.
+2. Regenerar la clave de TMDB, porque se pegó completa en una conversación.
+3. Quitar el prefijo `VITE_` a `VITE_TMDB_READ_TOKEN` en `.env`, o eliminarlo.
 4. Filtro por formato de exhibición, cuando haya una fuente de datos que lo dé.
-5. Opcional: ejecutar `discover-standards` sobre el código real (componentes React, estructura y nombres).
+5. Actualizar Node a 20.19+ o 22.12+ (requisito de Vite 8).
+6. Opcional: ejecutar `discover-standards` sobre el código real (componentes React, estructura y nombres).
