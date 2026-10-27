@@ -2,6 +2,7 @@ import { Link, Route, Routes } from 'react-router';
 import Header from './components/Header.jsx';
 import Cartelera from './pages/Cartelera.jsx';
 import Ficha from './pages/Ficha.jsx';
+import ProximosEstrenos from './pages/ProximosEstrenos.jsx';
 
 function NotFound() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
       <main className="pt-16">
         <Routes>
           <Route path="/" element={<Cartelera />} />
+          <Route path="/proximos-estrenos" element={<ProximosEstrenos />} />
           <Route path="/pelicula/:id" element={<Ficha />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import { getImageUrl } from '../services/tmdb.js';
 
-export default function MovieCard({ movie }) {
+export default function MovieCard({ movie, releaseDate }) {
   return (
     <Link
       to={`/pelicula/${movie.id}`}
@@ -14,6 +14,7 @@ export default function MovieCard({ movie }) {
         className="aspect-[2/3] w-full rounded bg-cine-surface object-cover transition-transform duration-200 group-hover:scale-105"
       />
       <h3 className="mt-2 truncate text-sm text-cine-muted group-hover:text-white">{movie.title}</h3>
+      {releaseDate && <p className="mt-1 text-xs text-cine-muted">{releaseDate}</p>}
     </Link>
   );
 }
