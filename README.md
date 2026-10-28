@@ -1,178 +1,198 @@
-# AgentOS - Cartelera de Cine 🎬
+# Cartelera de Cine 🎬
 
-Proyecto de cartelera cinematográfica interactiva desarrollada con **React 19**, **Vite** y **Tailwind CSS**, consumiendo la API de **TMDB (The Movie Database)** y construido mediante el trabajo coordinado de agentes de Inteligencia Artificial bajo la metodología **AgentOS**.
-
----
-
-## 🧠 ¿Qué es la Metodología AgentOS?
-
-**AgentOS** es un marco de trabajo (*framework*) diseñado para que desarrolladores y agentes de IA colaboren de forma predecible, disciplinada y de alta calidad. Organiza el conocimiento y el ciclo de vida del desarrollo en tres pilares clave dentro de la carpeta `agent-os/`:
-
-- 📍 **`agent-os/product/` (El Qué y Para Quién)**: Contiene la misión del producto (`mission.md`), el mapa de ruta (`roadmap.md`) y las definiciones del stack tecnológico (`tech-stack.md`).
-- 📏 **`agent-os/standards/` (Las Reglas y Buenas Prácticas)**: Repositorio central de convenciones, estándares de API, patrones de arquitectura y guías de código (`index.yml` y carpetas de estándares).
-- 📋 **`agent-os/specs/` (El Plan de Trabajo por Iteración)**: Cada ciclo o funcionalidad cuenta con su propia carpeta versionada (`YYYY-MM-DD-HHMM-nombre-feature/`), conteniendo el plan de tareas (`plan.md`), contexto de shaping (`shape.md`), estándares requeridos (`standards.md`) y referencias de código (`references.md`).
+Una aplicación web moderna, rápida y responsiva para consultar películas en cartelera, próximos estrenos, catálogo general y fichas técnicas completas con tráilers, reparto y detalles de producción. Construida con **React 19**, **Vite**, **Tailwind CSS v4** y alimentada por la API de **TMDB (The Movie Database)**.
 
 ---
 
-## 🔄 Flujo de Trabajo Paso a Paso en Cada "Vuelta" (Ciclo) de AgentOS
+## ✨ Características
 
-Cada vez que vayas a iniciar una nueva iteración o vuelta de desarrollo (por ejemplo: agregar un nuevo filtro, una vista de detalle, o una nueva integración), sigue este ciclo sistemático:
-
-```mermaid
-flowchart TD
-    A[1. Revisión de Roadmap] --> B["2. /shape-spec (Modo Plan)"]
-    B --> C["3. /inject-standards"]
-    C --> D[4. Implementación guiada por plan.md]
-    D --> E[5. Verificación & Build]
-    E --> F[6. Actualización de Roadmap]
-    F -->|Nuevos patrones descubiertos| G["7. /discover-standards & /index-standards"]
-```
+- 🎥 **Cartelera en Tiempo Real**: Consulta las películas actualmente en cines (`/`).
+- 🗓️ **Próximos Estrenos**: Descubre los lanzamientos futuros confirmados (`/proximos-estrenos`).
+- 📚 **Catálogo y Búsqueda**: Explora películas con paginación, filtros por año y buscador integrado en tiempo real (`/catalogo`).
+- 📄 **Ficha Detallada**: Información exhaustiva de cada película:
+  - Sinopsis completa y título original.
+  - Puntuación de usuarios, duración y fecha de lanzamiento.
+  - Géneros cinematográficos asociados.
+  - Tráiler oficial integrado vía YouTube.
+  - Reparto y equipo técnico principal.
+- 📱 **Diseño Adaptativo (Mobile-First)**: Interfaz oscura moderna optimizada para móviles, tablets y escritorios.
 
 ---
 
-### Paso 0: Definición o Revisión de Producto (Inicio de proyecto o cambio de rumbo)
+## 🛠️ Stack Tecnológico
 
-Si el proyecto está comenzando o necesitas redefinir la visión general, metas o stack:
+- **Frontend:** [React 19](https://react.dev/)
+- **Enrutamiento:** [React Router v8](https://reactrouter.com/)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Herramienta de Construcción (Build Tool):** [Vite](https://vitejs.dev/)
+- **Fuente de Datos:** [The Movie Database (TMDB) API](https://www.themoviedb.org/)
+
+---
+
+## 📁 Estructura del Proyecto
 
 ```text
-/plan-product
+├── public/                 # Archivos estáticos y recursos públicos
+├── src/
+│   ├── components/         # Componentes reutilizables (Header, MovieCard, Loader, etc.)
+│   ├── hooks/              # Custom hooks para lógica compartida
+│   ├── pages/              # Vistas principales (Cartelera, ProximosEstrenos, Catalogo, Ficha)
+│   ├── services/           # Cliente de conexión con la API de TMDB (tmdb.js)
+│   ├── utils/              # Funciones de ayuda y utilidades
+│   ├── App.jsx             # Definición de rutas y estructura principal
+│   ├── index.css           # Estilos globales y directivas de Tailwind
+│   └── main.jsx            # Punto de entrada de la aplicación
+├── .env.example            # Plantilla de variables de entorno
+├── index.html              # HTML base
+├── package.json            # Dependencias y scripts
+└── vite.config.js          # Configuración de Vite y plugins
 ```
 
-* **Qué hace:** Inicia una conversación guiada para definir o actualizar:
-  - `agent-os/product/mission.md` (problema, público objetivo y solución).
-  - `agent-os/product/tech-stack.md` (librerías, frameworks y decisiones técnicas).
-  - `agent-os/product/roadmap.md` (fases, hitos y funcionalidades planificadas).
-* **Si ya está creado:** Consulta `agent-os/product/roadmap.md` para seleccionar la siguiente funcionalidad a construir.
+---
+
+## 📋 Requisitos Previos
+
+Antes de comenzar, asegúrate de tener instalado:
+
+- [Node.js](https://nodejs.org/) (versión 18 o superior recomendada).
+- [npm](https://www.npmjs.com/) (incluido con Node.js), `pnpm` o `yarn`.
+- Una clave de API gratuita de [The Movie Database (TMDB)](https://www.themoviedb.org/settings/api).
 
 ---
 
-### Paso 1: Conceptualización y Especificación (*Shaping & Planning*)
+## 🚀 Instalación y Uso en Desarrollo
 
-Antes de escribir una sola línea de código para una nueva característica, debes estructurar la especificación:
+Sigue estos pasos para clonar y ejecutar el proyecto localmente:
 
-1. **Activa el modo de planificación** en tu asistente/agente (Plan Mode).
-2. **Ejecuta el comando:**
-
-```text
-/shape-spec
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/cartelera-cine.git
+cd cartelera-cine
 ```
 
-* **Qué hace el agente paso a paso:**
-  1. **Aclarar alcance:** Te preguntará qué se va a construir, restricciones y resultados esperados.
-  2. **Recopilar visuales:** Solicita bocetos, wireframes o capturas de referencia (o indicarle si no aplica).
-  3. **Identificar código de referencia:** Pide archivos o patrones existentes en el proyecto a tomar de modelo.
-  4. **Verificar contexto del producto:** Revisa la alineación con `agent-os/product/`.
-  5. **Vincular estándares:** Lee `agent-os/standards/index.yml` y propone qué estándares aplican a este trabajo.
-  6. **Crear carpeta de la spec:** Genera `agent-os/specs/YYYY-MM-DD-HHMM-{slug}/`.
-  7. **Estructurar el plan:** Crea `plan.md` donde la **Tarea 1 (T001)** siempre es persistir la documentación (`shape.md`, `standards.md`, `references.md`), seguida de las tareas de implementación divididas y verificables.
-
----
-
-### Paso 2: Inyección de Estándares en el Contexto (*Context Injection*)
-
-Para asegurarte de que el agente conozca al pie de la letra las reglas de arquitectura y buenas prácticas antes de programar:
-
-```text
-# Modo automático (el agente detecta los estándares aplicables según la conversación/spec):
-/inject-standards
-
-# O modo explícito (inyectar una categoría o archivo concreto):
-/inject-standards api
-/inject-standards api/tmdb-client
+### 2. Instalar dependencias
+```bash
+npm install
 ```
 
-* **Qué hace:** Carga de manera concisa las directrices en la ventana de contexto del agente, evitando que invente convenciones arbitrarias o repita errores.
+### 3. Configurar variables de entorno
+Crea un archivo `.env` en la raíz del proyecto tomando como referencia `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Abre `.env` y define tu clave de API de TMDB:
+
+```env
+VITE_TMDB_API_KEY=tu_api_key_aqui
+```
+
+> **Nota:** La clave debe tener el prefijo `VITE_` para que Vite la exponga al cliente.
+
+### 4. Iniciar el servidor local
+```bash
+npm run dev
+```
+
+Abre en tu navegador la URL que indique la consola (normalmente `http://localhost:5173`).
 
 ---
 
-### Paso 3: Implementación y Ejecución de Tareas
+## 📦 Scripts Disponibles
 
-Pasa al modo de ejecución/edición y pídele al agente que ejecute el plan acordado:
+En el directorio del proyecto puedes ejecutar:
 
-1. El agente confirmará la **Tarea 1**: guardar los archivos de la spec en `agent-os/specs/{directorio}/`.
-2. Procede tarea por tarea según lo definido en `plan.md` (modificación de componentes React, llamadas a la API, estilos CSS, etc.).
-3. El agente se apoya en los criterios de aceptación y mapeo de requerimientos estipulados en la spec.
+| Comando | Descripción |
+|---|---|
+| `npm run dev` | Inicia el servidor de desarrollo local con recarga rápida (HMR). |
+| `npm run build` | Compila y optimiza la aplicación para producción en la carpeta `dist/`. |
+| `npm run preview` | Previsualiza localmente la compilación de producción generada en `dist/`. |
 
 ---
 
-### Paso 4: Verificación y Cierre de la Vuelta
+## 🌐 Guía de Despliegue (Deployment)
 
-Una vez implementada la funcionalidad:
+Para poner en producción la aplicación en cualquier proveedor de hosting estático (Vercel, Netlify, Render, Cloudflare Pages, etc.):
 
-1. **Validación técnica y compilación:**
-   ```bash
-   npm run build
+### 1. Generar la compilación de producción
+```bash
+npm run build
+```
+Esto creará la carpeta optimizada `dist/`.
+
+---
+
+### Opción A: Despliegue en Vercel (Recomendado)
+
+1. Conecta tu repositorio de GitHub a [Vercel](https://vercel.com/).
+2. Configura los parámetros del proyecto:
+   - **Framework Preset:** Vite
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+3. En la sección **Environment Variables**, añade:
+   - Nombre: `VITE_TMDB_API_KEY`
+   - Valor: `[Tu API Key de TMDB]`
+4. **Configuración de rutas SPA (React Router):**  
+   Crea o añade un archivo `vercel.json` en la raíz si experimentas errores 404 al recargar rutas internas:
+   ```json
+   {
+     "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+   }
    ```
-2. **Comprobación funcional:**
-   ```bash
-   npm run dev
-   ```
-   Verificar en el navegador los casos de uso, estados de carga, errores y casos límite.
-3. **Actualización de documentación:**
-   - Marcar como completada la tarea en la spec.
-   - Actualizar `agent-os/product/roadmap.md` reflejando el nuevo estado de la funcionalidad.
+5. Haz clic en **Deploy**.
 
 ---
 
-### Paso 5: Extracción y Mantenimiento de Estándares (Opcional / Cierre de ciclo)
+### Opción B: Despliegue en Netlify
 
-Si durante la iteración se consolidaron nuevos patrones útiles para futuros agentes:
-
-1. **Descubrir nuevos estándares:**
+1. Vincula tu repositorio en [Netlify](https://www.netlify.com/).
+2. Ajusta los parámetros:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+3. En **Site configuration > Environment variables**, añade la variable `VITE_TMDB_API_KEY`.
+4. **Manejo de rutas SPA:**  
+   Crea un archivo llamado `_redirects` dentro de la carpeta `public/` con la siguiente regla:
    ```text
-   /discover-standards
+   /*    /index.html   200
    ```
-   Analiza el código desarrollado para extraer conocimiento tribal y documentarlo en `agent-os/standards/`.
-
-2. **Reindexar estándares:**
-   ```text
-   /index-standards
-   ```
-   Actualiza `agent-os/standards/index.yml` para que los nuevos estándares queden disponibles para el comando `/inject-standards` y `/shape-spec`.
+5. Publica el sitio.
 
 ---
 
-## 📋 Resumen de Comandos AgentOS
+### Opción C: Servidor Nginx o Hosting Tradicional
 
-| Comando | Cuándo usarlo | Propósito principal |
-|---|---|---|
-| `/plan-product` | Al inicio del proyecto o al replantear la visión | Define `mission.md`, `roadmap.md` y `tech-stack.md`. |
-| `/shape-spec` | Al iniciar cualquier nueva funcionalidad o feature | Crea la carpeta en `specs/` con `plan.md`, `shape.md`, referencias y estándares. |
-| `/inject-standards` | Antes de codificar o durante la planificación | Carga estándares específicos en la memoria del agente. |
-| `/discover-standards` | Al finalizar código nuevo con patrones reutilizables | Extrae patrones del código hacia `agent-os/standards/`. |
-| `/index-standards` | Tras crear o modificar estándares | Actualiza el índice `agent-os/standards/index.yml`. |
+Si utilizas un servidor web como Nginx o Apache:
+1. Copia el contenido de la carpeta `dist/` a tu directorio raíz web (ej. `/var/www/html`).
+2. Configura el servidor para redirigir todas las peticiones a `index.html` para permitir el enrutamiento del lado del cliente:
+   ```nginx
+   location / {
+       try_files $uri $uri/ /index.html;
+   }
+   ```
 
 ---
 
-## 🚀 Instalación y Puesta en Marcha del Proyecto
+## 🔒 Variables de Entorno
 
-### Requisitos Previos
-- **Node.js** (v18 o superior recomendado)
-- Cuenta y API Key de **TMDB** ([The Movie Database API](https://www.themoviedb.org/settings/api))
+| Variable | Descripción | Obligatoria |
+|---|---|:---:|
+| `VITE_TMDB_API_KEY` | Clave pública de acceso a la API v3 de The Movie Database. | Sí |
 
-### Pasos de Configuración
+---
 
-1. **Clonar e instalar dependencias:**
-   ```bash
-   npm install
-   ```
+## 🤝 Contribuciones
 
-2. **Configurar variables de entorno:**
-   Copia el archivo de ejemplo y coloca tu API Key de TMDB:
-   ```bash
-   cp .env.example .env
-   ```
-   Edita `.env` con tu clave:
-   ```env
-   VITE_TMDB_API_KEY=tu_api_key_aqui
-   ```
+Las contribuciones son bienvenidas. Si deseas aportar mejoras o corregir incidencias:
 
-3. **Iniciar el servidor de desarrollo:**
-   ```bash
-   npm run dev
-   ```
+1. Haz un fork del repositorio.
+2. Crea una rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
+3. Realiza tus cambios y haz commit (`git commit -m 'feat: agrega nueva funcionalidad'`).
+4. Sube tu rama (`git push origin feature/nueva-funcionalidad`).
+5. Abre un Pull Request.
 
-4. **Compilar para producción:**
-   ```bash
-   npm run build
-   ```
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia [MIT](LICENSE).
