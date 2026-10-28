@@ -1,6 +1,7 @@
 import { Link, Route, Routes } from 'react-router';
 import Header from './components/Header.jsx';
 import Cartelera from './pages/Cartelera.jsx';
+import Catalogo from './pages/Catalogo.jsx';
 import Ficha from './pages/Ficha.jsx';
 import ProximosEstrenos from './pages/ProximosEstrenos.jsx';
 
@@ -23,6 +24,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Cartelera />} />
           <Route path="/proximos-estrenos" element={<ProximosEstrenos />} />
+          <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/pelicula/:id" element={<Ficha />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

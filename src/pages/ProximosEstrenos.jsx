@@ -3,18 +3,7 @@ import Loader from '../components/Loader.jsx';
 import MovieCard from '../components/MovieCard.jsx';
 import { useFetch } from '../hooks/useFetch.js';
 import { getUpcoming } from '../services/tmdb.js';
-
-const dateFormatter = new Intl.DateTimeFormat('es-ES', {
-  dateStyle: 'long',
-  timeZone: 'UTC',
-});
-
-function formatReleaseDate(releaseDate) {
-  if (!releaseDate) return 'Fecha por confirmar';
-
-  const date = new Date(`${releaseDate}T00:00:00Z`);
-  return Number.isNaN(date.getTime()) ? 'Fecha por confirmar' : dateFormatter.format(date);
-}
+import { formatReleaseDate } from '../utils/formatReleaseDate.js';
 
 export default function ProximosEstrenos() {
   const { data, loading, error, retry } = useFetch(getUpcoming, []);

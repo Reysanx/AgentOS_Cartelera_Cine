@@ -7,12 +7,18 @@ export default function Header() {
         <Link to="/" className="text-2xl font-black tracking-wider text-cine-red">
           CARTELERA
         </Link>
-        <nav aria-label="Navegación principal">
+        <nav aria-label="Navegación principal" className="flex gap-6">
           <Link
             to="/proximos-estrenos"
             className="text-sm font-semibold text-white hover:text-cine-red focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cine-red"
           >
             Próximos estrenos
+          </Link>
+          <Link
+            to="/catalogo"
+            className="text-sm font-semibold text-white hover:text-cine-red focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cine-red"
+          >
+            Catálogo
           </Link>
         </nav>
       </div>

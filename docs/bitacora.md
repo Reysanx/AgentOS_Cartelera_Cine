@@ -432,6 +432,43 @@ Trabajo hecho fuera de esta sesión por González Rosas (fork `lgonros0510`). Se
 
 ---
 
+## Etapa 14: `/shape-spec` e implementación del Catálogo (28/10/2026)
+
+`/shape-spec` en modo plan. Spec: `agent-os/specs/2026-10-28-1959-catalogo/` (`plan.md`, `shape.md`, `standards.md`, `references.md`).
+
+### Preguntas y respuestas
+| Pregunta | Opciones ofrecidas | Respuesta |
+|---|---|---|
+| ¿Qué vamos a construir? | Filtro por formato · Horarios por día · Mejora de la ficha · Paginación | **Respuesta libre:** un apartado con películas antiguas, cargando por ejemplo el último año o los dos últimos, con scroll infinito, orden de más reciente a más antigua y filtro por año |
+| ¿Nombre y ruta? | Biblioteca · Catálogo · Estrenos anteriores | **Catálogo** (`/catalogo`) |
+| ¿Filtros? | Año · Género · Idioma · Búsqueda por título | **Año y búsqueda por título** |
+| ¿Carga por defecto? | Scroll infinito 2 años · 1 año · Botón "Cargar más" | **Scroll infinito, 2 años** |
+| ¿Filtrar películas poco conocidas? | Solo con popularidad · Todas | **Solo con popularidad** (`vote_count.gte=50`) |
+| Visuales / referencias / roadmap / estándares | — | **Ninguno / Cartelera + Próximos estrenos / añadir al roadmap / los tres estándares de API** |
+
+### Código
+| Archivo | Cambio |
+|---|---|
+| `src/services/tmdb.js` | Nuevas `getCatalogPage({ page, year })` (`/discover/movie`) y `searchMoviesPage({ query, page, year })` (`/search/movie`). `request()` descarta los parámetros `null`/`undefined` |
+| `src/hooks/useInfiniteMovies.js` | Hook de paginación: reinicia al cambiar filtros, descarta respuestas obsoletas, evita duplicados, tope de 500 páginas, error de páginas posteriores sin perder lo cargado |
+| `src/pages/Catalogo.jsx` | Buscador con debounce de 400 ms, selector de año (1900 al actual), "Limpiar filtros" y centinela con `IntersectionObserver` |
+| `src/utils/formatReleaseDate.js` | Extraída de `ProximosEstrenos.jsx`, que ahora la importa |
+| `src/App.jsx`, `src/components/Header.jsx` | Ruta `/catalogo` y enlace "Catálogo" en la cabecera |
+| `agent-os/product/roadmap.md` | Entrada "Catálogo" en la fase 2 |
+
+### Hallazgo
+Con `region=ES`, `/discover/movie` aplica los filtros de fecha a la fecha de estreno regional pero devuelve la fecha global: aparecían películas de diciembre con tope en octubre y el orden se rompía. El Catálogo envía `region: null` (sin región) tanto en discover como en search.
+
+### Verificación
+| Comando | Resultado |
+|---|---|
+| `npm run build` | OK, 104 módulos |
+| Script de Node contra TMDB con las funciones reales | Por defecto: 68 páginas, fechas descendentes y sin futuras; año 2010 y "matrix" (con y sin 1999) devuelven lo esperado. La clave del `.env` ya tiene 32 caracteres y responde 200 |
+
+Pendiente: probar el scroll infinito y los estados de error en el navegador (`npm run dev`). No se ha hecho commit.
+
+---
+
 ## Estado actual del proyecto
 
 ```
@@ -449,7 +486,9 @@ AgentOS_Cartelera_Cine/
 │   │   ├── 2026-10-26-1105-busqueda-filtros/
 │   │   │   ├── plan.md, shape.md, standards.md, references.md
 │   │   │   └── batch-report.yaml, checkpoints/tasks-to-impl.yaml
-│   │   └── 2026-10-27-1851-proximos-estrenos/
+│   │   ├── 2026-10-27-1851-proximos-estrenos/
+│   │   │   └── plan.md, shape.md, standards.md, references.md
+│   │   └── 2026-10-28-1959-catalogo/
 │   │       └── plan.md, shape.md, standards.md, references.md
 │   └── standards/
 │       ├── index.yml
@@ -463,8 +502,9 @@ AgentOS_Cartelera_Cine/
 │   └── poster-placeholder.svg
 ├── src/
 │   ├── components/  (Header, Loader, ErrorMessage, MovieCard)
-│   ├── hooks/useFetch.js
-│   ├── pages/       (Cartelera, Ficha, ProximosEstrenos)
+│   ├── hooks/       (useFetch, useInfiniteMovies)
+│   ├── pages/       (Cartelera, Ficha, ProximosEstrenos, Catalogo)
+│   ├── utils/formatReleaseDate.js
 │   ├── services/tmdb.js
 │   ├── App.jsx, main.jsx, index.css
 ├── .env                         (ignorado por git)
